@@ -10,16 +10,16 @@ def cache(func: Callable) -> Callable:
 
         nonlocal results
 
-        if func.__name__ in results:
-            if args + tuple(kwargs.items()) in results[func.__name__]:
+        if func in results:
+            if args + tuple(sorted(kwargs.items())) in results[func]:
                 print("Getting from cache")
-                return results[func.__name__][args + tuple(kwargs.items())]
+                return results[func][args + tuple(sorted(kwargs.items()))]
         else:
-            results[func.__name__] = {}
+            results[func] = {}
 
         print("Calculating new result")
         result = func(*args, **kwargs)
-        results[func.__name__][args + tuple(kwargs.items())] = result
+        results[func][args + tuple(sorted(kwargs.items()))] = result
 
         return result
     return wrapper
